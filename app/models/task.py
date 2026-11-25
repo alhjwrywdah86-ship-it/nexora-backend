@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy import (
     Column,
+    DateTime,
     ForeignKey,
     String
 )
@@ -42,11 +43,11 @@ class Task(Base):
     )
 
     due_date = Column(
-        String,
+        DateTime(timezone=True),
         nullable=True
     )
 
     completed_at = Column(
-        String,
+        DateTime(timezone=True),
         nullable=True
     )
