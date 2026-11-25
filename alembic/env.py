@@ -11,7 +11,12 @@ from app.models.goal import Goal
 from app.models.task import Task
 
 config = context.config
+from app.core.config import settings
 
+config.set_main_option(
+    "sqlalchemy.url",
+    settings.DATABASE_URL.replace("%", "%%")
+)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
