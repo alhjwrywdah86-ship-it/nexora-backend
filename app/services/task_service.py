@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.repositories.task_repository import (
     TaskRepository
@@ -20,8 +20,8 @@ class TaskService:
 
         task.status = "completed"
 
-        task.completed_at = str(
-            datetime.utcnow()
+        task.completed_at = datetime.now(
+    timezone.utc
         )
 
         db.commit()
