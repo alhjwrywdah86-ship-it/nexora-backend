@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from jose import jwt
+from jose import JWTError, jwt
 
 from app.core.config import settings
 
@@ -13,7 +13,7 @@ def create_access_token(
     expires_minutes: int = 30
 ):
 
-    expire = datetime.utcnow() + timedelta(
+    expire = datetime.now(timezone.utc) + timedelta(
         minutes=expires_minutes
     )
 
@@ -27,3 +27,18 @@ def create_access_token(
         settings.JWT_SECRET,
         algorithm=ALGORITHM
     )
+
+
+def decode_access_token(token: str):
+    """يرجع user_id أو None إذا كان التوكن غير صالح."""
+
+    try:
+        payload = jwt.decode(
+            token,
+            settings.JWT_SECRET,
+            algorithms=[ALGORITHM]
+        )
+    except JWTError:
+        return None
+
+    return payload.get("sub")
