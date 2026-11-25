@@ -1,38 +1,25 @@
+from app.models.task import Task
+
+
 class TaskRepository:
 
-    def create(
-        self,
-        db,
-        task
-    ):
+    def create(self, db, task):
         db.add(task)
         db.commit()
         db.refresh(task)
 
         return task
 
-    def get_by_goal(
-        self,
-        db,
-        goal_id
-    ):
+    def get_by_goal(self, db, goal_id):
         return (
             db.query(Task)
-            .filter(
-                Task.goal_id == goal_id
-            )
+            .filter(Task.goal_id == goal_id)
             .all()
         )
-def get_by_id(
-    self,
-    db,
-    task_id
-):
 
-    return (
-        db.query(Task)
-        .filter(
-            Task.id == task_id
+    def get_by_id(self, db, task_id):
+        return (
+            db.query(Task)
+            .filter(Task.id == task_id)
+            .first()
         )
-        .first()
-    )
