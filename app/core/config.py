@@ -34,5 +34,13 @@ class Settings(BaseModel):
 
     JWT_SECRET: str = _required("JWT_SECRET")
 
+    DB_ECHO: bool = os.getenv("DB_ECHO", "false").lower() == "true"
+
+    CORS_ORIGINS: list[str] = [
+        origin.strip()
+        for origin in os.getenv("CORS_ORIGINS", "").split(",")
+        if origin.strip()
+    ]
+
 
 settings = Settings()
