@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy import (
     Column,
+    DateTime,
     ForeignKey,
     String,
     Integer
@@ -38,7 +39,7 @@ class Goal(Base):
     )
 
     deadline = Column(
-        String,
+        DateTime(timezone=True),
         nullable=True
     )
 
