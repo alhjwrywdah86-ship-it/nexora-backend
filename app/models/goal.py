@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy import (
     Column,
+    ForeignKey,
     String,
     Integer
 )
@@ -21,7 +22,9 @@ class Goal(Base):
 
     user_id = Column(
         String,
-        nullable=False
+        ForeignKey("users.id"),
+        nullable=False,
+        index=True
     )
 
     title = Column(
