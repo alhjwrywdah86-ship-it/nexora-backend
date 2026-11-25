@@ -1,3 +1,5 @@
+from fastapi import HTTPException, status
+
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 
@@ -23,19 +25,22 @@ class AuthService:
         data
     ):
 
+        email = data.email.lower()
+
         existing = self.repo.get_by_email(
             db,
-            data.email
+            email
         )
 
         if existing:
-            raise Exception(
-                "Email already exists"
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Email already exists"
             )
 
         user = User(
             name=data.name,
-            email=data.email,
+            email=email,
             password_hash=hash_password(
                 data.password
             )
@@ -54,21 +59,25 @@ class AuthService:
 
         user = self.repo.get_by_email(
             db,
-            data.email
+            data.email.lower()
         )
 
-        if not user:
-            return None
-
-        if not verify_password(
-            data.password,
-            user.password_hash
+        if (
+            not user
+            or not user.is_active
+            or not verify_password(
+                data.password,
+                user.password_hash
+            )
         ):
-            return None
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
 
         return {
-            "access_token":
-                create_access_token(
-                    user.id
-                )
-        }
+            "access_token": create_access_token(
+                user.id
+            ),
+            "token_type": "bearer"
+            }
