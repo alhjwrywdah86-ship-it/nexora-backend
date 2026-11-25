@@ -35,7 +35,11 @@ def complete_task(
         db,
         task_id
     )
-
+    if task is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
     return service.complete_task(
         db,
         task
