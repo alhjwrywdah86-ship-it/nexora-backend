@@ -1,5 +1,20 @@
-from pydantic import BaseModel
 import os
+
+from dotenv import load_dotenv
+from pydantic import BaseModel
+
+load_dotenv()
+
+
+def _required(name: str) -> str:
+    value = os.getenv(name)
+
+    if not value or value == "CHANGE_ME":
+        raise RuntimeError(
+            f"المتغير {name} غير مضبوط في البيئة"
+        )
+
+    return value
 
 
 class Settings(BaseModel):
@@ -17,10 +32,7 @@ class Settings(BaseModel):
         "redis://localhost:6379"
     )
 
-    JWT_SECRET: str = os.getenv(
-        "JWT_SECRET",
-        "CHANGE_ME"
-    )
+    JWT_SECRET: str = _required("JWT_SECRET")
 
 
 settings = Settings()
