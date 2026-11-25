@@ -17,9 +17,10 @@ from app.repositories.task_repository import (
 
 class GoalService:
     def __init__(self):
-        self.planner = PlannerAgent()
 
-    def __init__(self):
+        self.planner = PlannerAgent()
+        self.goal_repo = GoalRepository()
+        self.task_repo = TaskRepository()
 
         self.goal_repo = GoalRepository()
         self.task_repo = TaskRepository()
