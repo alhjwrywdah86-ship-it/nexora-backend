@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy import (
     Column,
+    ForeignKey,
     String
 )
 
@@ -20,7 +21,9 @@ class Task(Base):
 
     goal_id = Column(
         String,
-        nullable=False
+        ForeignKey("goals.id"),
+        nullable=False,
+        index=True
     )
 
     title = Column(
