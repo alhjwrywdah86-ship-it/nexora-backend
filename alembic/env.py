@@ -7,6 +7,8 @@ from alembic import context
 
 from app.db.base import Base
 from app.models.user import User
+from app.models.goal import Goal
+from app.models.task import Task
 
 config = context.config
 
